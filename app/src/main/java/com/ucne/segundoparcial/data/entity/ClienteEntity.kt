@@ -1,11 +1,11 @@
-package com.ucne.segundoparcial.data.repository
+package com.ucne.segundoparcial.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
 @Entity("cliente")
-data class ClienteRepository(
+data class ClienteEntity(
     @PrimaryKey(autoGenerate = true)
     val codigoCliente: Int = 0,
     val nombres: String = "",
