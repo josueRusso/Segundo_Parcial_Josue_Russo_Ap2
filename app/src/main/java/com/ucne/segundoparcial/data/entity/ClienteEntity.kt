@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class ClienteEntity(
     @PrimaryKey(autoGenerate = true)
     val codigoCliente: Int = 0,
-    val nombres: String = "",
+    val nombre: String = "",
     val direccion: String = "",
     val telefono: String = "",
     val celular: String = "",
