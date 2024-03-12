@@ -92,7 +92,7 @@ class ClienteViewModel @Inject constructor(
                 val tipoComprobante = state.value.cliente.tipoComprobante
 
                 if (nombre.isBlank() || direccion.isBlank() || telefono.isBlank() || celular.isBlank() ||
-                    cedula.isBlank() || tipoComprobante == 0
+                    cedula.isBlank() || tipoComprobante != 0
                 ) {
                     _state.update {
                         it.copy(
@@ -181,7 +181,7 @@ sealed interface ClienteEvent {
     data class telefono(val telefono: String) : ClienteEvent
     data class celular(val celular: String) : ClienteEvent
     data class cedula(val cedula: String) : ClienteEvent
-    data class tipoComprobante(val tipoComprobante: String) : ClienteEvent
+    data class tipoComprobante(val tipoComprobante:String) : ClienteEvent
     data class onDelete(val cliente: ClienteEntity) : ClienteEvent
 
     object onSave : ClienteEvent

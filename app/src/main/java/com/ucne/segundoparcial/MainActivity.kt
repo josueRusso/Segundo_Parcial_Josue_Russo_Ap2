@@ -24,7 +24,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ucne.segundoparcial.ui.Consulta.ConsultaScreen
 import com.ucne.segundoparcial.ui.Registro.RegistroScreen
-import com.ucne.segundoparcial.ui.Screen.HomeScreen
 import com.ucne.segundoparcial.ui.theme.SegundoParcialTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,19 +42,9 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         TopAppBar(
                             title = {
-                                Text(text = "")
+                                Text(text = "ClientesApp")
                             },
                             actions = {
-                                IconButton(
-                                    onClick = {
-                                        navController.navigate("registro")
-                                    }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Add,
-                                        contentDescription = "Agregar"
-                                    )
-                                }
                                 IconButton(
                                     onClick = {
                                         navController.navigate("Consulta")
@@ -66,18 +55,25 @@ class MainActivity : ComponentActivity() {
                                         contentDescription = "Consulta"
                                     )
                                 }
+                                IconButton(
+                                        onClick = {
+                                            navController.navigate("registro")
+                                        }
+                                        ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = "Agregar"
+                                    )
+                                }
                             }
                         )
                     }
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = "home",
+                        startDestination = "Consulta",
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        composable("home") {
-                            HomeScreen()
-                        }
                         composable("registro") {
                             RegistroScreen()
                         }
