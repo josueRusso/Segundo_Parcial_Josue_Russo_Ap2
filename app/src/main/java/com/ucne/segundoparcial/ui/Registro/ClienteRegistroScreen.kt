@@ -26,7 +26,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import kotlinx.coroutines.delay
 
 @Composable
 fun RegistroScreen(
@@ -179,16 +184,15 @@ fun RegistroScreen(
                 }
 
             }
-        }
-        state.successMessage?.let {
-            MessageCard(message = it, color = Color.Green)
-        }
+            state.successMessage?.let {
+                MessageCard(message = it, color = Color.Green)
+            }
 
-        state.error?.let {
-            MessageCard(message = it, color = Color.Red)
+            state.error?.let {
+                MessageCard(message = it, color = Color.Red)
+            }
         }
     }
-
 }
 
 @Composable
@@ -196,28 +200,37 @@ fun MessageCard(
     message: String,
     color: Color
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Card(
-            shape = RoundedCornerShape(8.dp),
+    var showMessage by remember { mutableStateOf(true) }
+    
+    LaunchedEffect(showMessage) {
+        delay(1000)
+        showMessage = false
+    }
+
+    if (showMessage) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth(0.8f)
+                .fillMaxSize()
                 .padding(16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = color
+            Card(
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .padding(16.dp),
             ) {
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = Color.White,
-                    modifier = Modifier.padding(16.dp)
-                )
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = color
+                ) {
+                    Text(
+                        text = message,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = Color.White,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
             }
         }
     }

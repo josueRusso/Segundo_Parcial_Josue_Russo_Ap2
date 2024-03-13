@@ -82,68 +82,10 @@ class ClienteViewModel @Inject constructor(
                 }
             }
 
+
+
             ClienteEvent.onSave -> {
-                val codigoCliente = state.value.cliente.codigoCliente
-                val nombre = state.value.cliente.nombre
-                val direccion = state.value.cliente.direccion
-                val telefono = state.value.cliente.telefono
-                val celular = state.value.cliente.celular
-                val cedula = state.value.cliente.cedula
-                val tipoComprobante = state.value.cliente.tipoComprobante
-
-                if (nombre.isBlank() || direccion.isBlank() || telefono.isBlank() || celular.isBlank() ||
-                    cedula.isBlank() || tipoComprobante != 0
-                ) {
-                    _state.update {
-                        it.copy(
-                            error = "Porfavor llene los campo"
-                        )
-                    }
-
-                    val cliente = ClienteEntity(
-                        codigoCliente = codigoCliente,
-                        nombre = nombre,
-                        direccion = direccion,
-                        telefono = telefono,
-                        celular = celular,
-                        cedula = cedula,
-                        tipoComprobante = tipoComprobante
-                    )
-
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            error = null,
-                            successMessage = null
-                        )
-                    }
-
-                    viewModelScope.launch {
-                        try {
-                            clienteRepository.upsert(cliente)
-                            _state.update {
-                                it.copy(
-                                    isLoading = false,
-                                    successMessage = "Se guardo Correctamente"
-
-                                )
-                            }
-                        } catch (e: Exception) {
-                            _state.update {
-                                it.copy(
-                                    isLoading = false,
-                                    error = "Ocurrio un Error ${e.message}"
-                                )
-                            }
-                        }
-                    }
-                    _state.update {
-                        it.copy(
-                            cliente = ClienteEntity()
-                        )
-                    }
-
-                }
+                Guardar()
             }
 
             ClienteEvent.onNew -> {
@@ -162,6 +104,46 @@ class ClienteViewModel @Inject constructor(
                 }
             }
 
+        }
+    }
+
+    fun Guardar(){
+        val nombre = state.value.cliente.nombre
+        val direccion = state.value.cliente.direccion
+        val telefono = state.value.cliente.telefono
+        val celular = state.value.cliente.celular
+        val cedula = state.value.cliente.cedula
+        val tipoComprobante = state.value.cliente.tipoComprobante
+
+        if(nombre.isEmpty() || direccion.isEmpty() || telefono.isEmpty() || celular.isEmpty() ||
+            cedula.isEmpty() || tipoComprobante == 0){
+            _state.update {
+                it.copy(error = "LLene los campos")
+            }
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                clienteRepository.upsert(state.value.cliente)
+                _state.update {
+                    it.copy(
+                        successMessage = "Se guardo correctamente",
+                        error = null,
+                        isLoading = false,
+                        cliente = ClienteEntity()
+                    )
+                }
+
+            } catch (e: Exception){
+                _state.update {
+                    it.copy(
+                        error = "Ocurrio un error al guardar",
+                        successMessage = null,
+                        isLoading = false
+                    )
+                }
+            }
         }
     }
 }

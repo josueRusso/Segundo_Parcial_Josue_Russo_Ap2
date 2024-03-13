@@ -53,9 +53,8 @@ fun ConsultaScreen(
 
         LazyColumn{
             items(cliente) { cliente ->
-                Card(cliente = cliente, onDeleteClick = {
-                    viewModel.onEvent(ClienteEvent.onDelete(cliente))
-                })
+                Card(cliente = cliente, onDeleteClick = { viewModel.onEvent(ClienteEvent.onDelete(cliente)) })
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
